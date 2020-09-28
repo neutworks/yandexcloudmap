@@ -20,6 +20,7 @@ import (
 	postgresql "github.com/yandex-cloud/go-genproto/yandex/cloud/mdb/postgresql/v1"
 	redis "github.com/yandex-cloud/go-genproto/yandex/cloud/mdb/redis/v1"
 	resourcemanager "github.com/yandex-cloud/go-genproto/yandex/cloud/resourcemanager/v1"
+	"github.com/yandex-cloud/go-genproto/yandex/cloud/vpc/v1"
 	yandexcloudsdk "github.com/yandex-cloud/go-sdk"
 )
 
@@ -101,14 +102,6 @@ const (
 	yandexMaxPaginator = 1000
 )
 
-// YandexCloudSpaceView structure
-//type YandexCloudSpaceView struct {
-//	Cloud interface{} `json:"cloud"`
-//}
-
-// YandexCloud - Something that has everything
-//var YandexCloud YandexCloudSpaceView
-
 // YandexCloudStruct - describes a cloud information
 type YandexCloudStruct struct {
 	ID          string `json:"id"`
@@ -127,100 +120,123 @@ type YandexFolderStruct struct {
 	ParentCloudID   string `json:"parent_cloud_id"`
 }
 
-// YandexInstanceStruct - describes some folder information
-type YandexInstanceStruct struct {
+// YandexSubnetStruct - describes networks
+type YandexSubnetStruct struct {
 	ID               string            `json:"id"`
 	Name             string            `json:"name"`
-	Description      string            `json:"description"`
-	CreatedAt        string            `json:"created_at"`
-	ZoneID           string            `json:"zone_id"`
-	Labels           interface{}       `json:"labels"`
-	Metadata         map[string]string `json:"metadata"`
+	NetworkID        string            `json:"networkid"`
+	Labels           map[string]string `json:"labels"`
 	ParentFolderName string            `json:"parent_cloud_name"`
 	ParentFolderID   string            `json:"parent_cloud_id"`
 }
 
+// YandexNetworkInterface - Describes Netowrk interface for instance (for example)
+type YandexNetworkInterface struct {
+	ID           string `json:"id"`
+	SubnetID     string `json:"subnetid"`
+	SubnetName   string `json:"subnetname"`
+	PrimaryIPV4  string `json:"primaryipv4"`
+	PrimaryIPV6  string `json:"primaryipv6"`
+	PrimaryV4NAT string `json:"primaryv4nat"`
+	PrimaryV6NAT string `json:"primaryv6nat"`
+}
+
+// YandexInstanceStruct - describes some folder information
+type YandexInstanceStruct struct {
+	ID               string                    `json:"id"`
+	Name             string                    `json:"name"`
+	Description      string                    `json:"description"`
+	CreatedAt        string                    `json:"created_at"`
+	ZoneID           string                    `json:"zone_id"`
+	Interfaces       []*YandexNetworkInterface `json:"interfaces"`
+	Labels           map[string]string         `json:"labels"`
+	Metadata         map[string]string         `json:"metadata"`
+	ParentFolderName string                    `json:"parent_cloud_name"`
+	ParentFolderID   string                    `json:"parent_cloud_id"`
+}
+
 // YandexMySQLStruct - describes some MDB.MySQL information
 type YandexMySQLStruct struct {
-	ID               string      `json:"id"`
-	Name             string      `json:"name"`
-	Description      string      `json:"description"`
-	CreatedAt        string      `json:"created_at"`
-	Labels           interface{} `json:"labels"`
-	ParentFolderName string      `json:"parent_folder_name"`
-	ParentFolderID   string      `json:"parent_folder_id"`
+	ID               string            `json:"id"`
+	Name             string            `json:"name"`
+	Description      string            `json:"description"`
+	CreatedAt        string            `json:"created_at"`
+	Labels           map[string]string `json:"labels"`
+	ParentFolderName string            `json:"parent_folder_name"`
+	ParentFolderID   string            `json:"parent_folder_id"`
 }
 
 // YandexMongoDBStruct - describes some MDB.MongoDB information
 type YandexMongoDBStruct struct {
-	ID               string      `json:"id"`
-	Name             string      `json:"name"`
-	Description      string      `json:"description"`
-	CreatedAt        string      `json:"created_at"`
-	Labels           interface{} `json:"labels"`
-	ParentFolderName string      `json:"parent_folder_name"`
-	ParentFolderID   string      `json:"parent_folder_id"`
+	ID               string            `json:"id"`
+	Name             string            `json:"name"`
+	Description      string            `json:"description"`
+	CreatedAt        string            `json:"created_at"`
+	Labels           map[string]string `json:"labels"`
+	ParentFolderName string            `json:"parent_folder_name"`
+	ParentFolderID   string            `json:"parent_folder_id"`
 }
 
 // YandexPostgreSQLStruct - describes some MDB.PostgresDB information
 type YandexPostgreSQLStruct struct {
-	ID               string      `json:"id"`
-	Name             string      `json:"name"`
-	Description      string      `json:"description"`
-	CreatedAt        string      `json:"created_at"`
-	Labels           interface{} `json:"labels"`
-	ParentFolderName string      `json:"parent_folder_name"`
-	ParentFolderID   string      `json:"parent_folder_id"`
+	ID               string            `json:"id"`
+	Name             string            `json:"name"`
+	Description      string            `json:"description"`
+	CreatedAt        string            `json:"created_at"`
+	Labels           map[string]string `json:"labels"`
+	ParentFolderName string            `json:"parent_folder_name"`
+	ParentFolderID   string            `json:"parent_folder_id"`
 }
 
 // YandexRedisStruct - describes some MDB.Redis information
 type YandexRedisStruct struct {
-	ID               string      `json:"id"`
-	Name             string      `json:"name"`
-	Description      string      `json:"description"`
-	CreatedAt        string      `json:"created_at"`
-	Labels           interface{} `json:"labels"`
-	ParentFolderName string      `json:"parent_folder_name"`
-	ParentFolderID   string      `json:"parent_folder_id"`
+	ID               string            `json:"id"`
+	Name             string            `json:"name"`
+	Description      string            `json:"description"`
+	CreatedAt        string            `json:"created_at"`
+	Labels           map[string]string `json:"labels"`
+	ParentFolderName string            `json:"parent_folder_name"`
+	ParentFolderID   string            `json:"parent_folder_id"`
 }
 
 // YandexClickHouseStruct - describes some MDB.ClickHouse information
 type YandexClickHouseStruct struct {
-	ID               string      `json:"id"`
-	Name             string      `json:"name"`
-	Description      string      `json:"description"`
-	CreatedAt        string      `json:"created_at"`
-	Labels           interface{} `json:"labels"`
-	ParentFolderName string      `json:"parent_folder_name"`
-	ParentFolderID   string      `json:"parent_folder_id"`
+	ID               string            `json:"id"`
+	Name             string            `json:"name"`
+	Description      string            `json:"description"`
+	CreatedAt        string            `json:"created_at"`
+	Labels           map[string]string `json:"labels"`
+	ParentFolderName string            `json:"parent_folder_name"`
+	ParentFolderID   string            `json:"parent_folder_id"`
 }
 
 // YandexDiskStruct - describes some Compute.Disk information
 type YandexDiskStruct struct {
-	ID               string      `json:"id"`
-	Name             string      `json:"name"`
-	Description      string      `json:"description"`
-	CreatedAt        string      `json:"created_at"`
-	Labels           interface{} `json:"labels"`
-	ParentFolderName string      `json:"parent_folder_name"`
-	ParentFolderID   string      `json:"parent_folder_id"`
+	ID               string            `json:"id"`
+	Name             string            `json:"name"`
+	Description      string            `json:"description"`
+	CreatedAt        string            `json:"created_at"`
+	Labels           map[string]string `json:"labels"`
+	ParentFolderName string            `json:"parent_folder_name"`
+	ParentFolderID   string            `json:"parent_folder_id"`
 }
 
 // YandexStorageStruct - describes some Compute.Disk information
 type YandexStorageStruct struct {
-	ID               string      `json:"id"`
-	Name             string      `json:"name"`
-	Description      string      `json:"description"`
-	CreatedAt        string      `json:"created_at"`
-	Labels           interface{} `json:"labels"`
-	ParentFolderName string      `json:"parent_folder_name"`
-	ParentFolderID   string      `json:"parent_folder_id"`
+	ID               string            `json:"id"`
+	Name             string            `json:"name"`
+	Description      string            `json:"description"`
+	CreatedAt        string            `json:"created_at"`
+	Labels           map[string]string `json:"labels"`
+	ParentFolderName string            `json:"parent_folder_name"`
+	ParentFolderID   string            `json:"parent_folder_id"`
 }
 
 // YandexClouds - Surface Map for yandex cloud
 type YandexClouds struct {
 	Clouds        []*YandexCloudStruct      `json:"clouds"`
 	Folders       []*YandexFolderStruct     `json:"folers"`
+	Subnets       []*YandexSubnetStruct     `json:"subnets"`
 	Instances     []*YandexInstanceStruct   `json:"instances"`
 	Disks         []*YandexDiskStruct       `json:"disks"`
 	MDBMySQL      []*YandexMySQLStruct      `json:"mysql"`
@@ -319,18 +335,70 @@ func convertMapToSlice(theMap map[string]string) [][]string {
 	return pairs
 }
 
+func getSubnetName(subnets []*YandexSubnetStruct, subnetID string) string {
+	for _, i := range subnets {
+		if i.ID == subnetID {
+			return i.Name
+		}
+	}
+	return ""
+}
+
+func appendNetworkInterfaces(NetworkInterfaces []*YandexNetworkInterface, NetworkInterface *compute.NetworkInterface, subnets []*YandexSubnetStruct) []*YandexNetworkInterface {
+	theIndex := NetworkInterface.GetIndex()
+	log.Debug(theIndex)
+	theSubnetID := NetworkInterface.GetSubnetId()
+	log.Debug(theSubnetID)
+	theSubnetName := getSubnetName(subnets, theSubnetID)
+	log.Debug(theSubnetName)
+	thePriIPV4 := NetworkInterface.GetPrimaryV4Address()
+	log.Debug(thePriIPV4.GetAddress())
+	thePriIPV6 := NetworkInterface.GetPrimaryV6Address()
+	log.Debug(thePriIPV6.GetAddress())
+	thePriIPV4Addr := ""
+	thePriIPV6Addr := ""
+	thePriv4NAT := ""
+	thePriv6NAT := ""
+	if thePriIPV4 != nil {
+		thePriIPV4Addr = thePriIPV4.GetAddress()
+		if thePriIPV4.OneToOneNat != nil {
+			thePriv4NAT = thePriIPV4.OneToOneNat.GetAddress()
+		}
+	}
+	if thePriIPV6 != nil {
+		thePriIPV6Addr = thePriIPV6.GetAddress()
+		if thePriIPV6.OneToOneNat != nil {
+			thePriv6NAT = thePriIPV6.OneToOneNat.GetAddress()
+		}
+	}
+	NetworkInterfaces = append(NetworkInterfaces, &YandexNetworkInterface{
+		ID:           theIndex,
+		SubnetID:     theSubnetID,
+		SubnetName:   theSubnetName,
+		PrimaryIPV4:  thePriIPV4Addr,
+		PrimaryIPV6:  thePriIPV6Addr,
+		PrimaryV4NAT: thePriv4NAT,
+		PrimaryV6NAT: thePriv6NAT,
+	})
+	return NetworkInterfaces
+}
+
 // aux slice append
-func appendInstances(Instances []*YandexInstanceStruct, folder *YandexFolderStruct, yandexInstances []*compute.Instance) []*YandexInstanceStruct {
+func appendInstances(Instances []*YandexInstanceStruct, folder *YandexFolderStruct, yandexInstances []*compute.Instance, subnets []*YandexSubnetStruct) []*YandexInstanceStruct {
 	for _, instance := range yandexInstances {
-		// Convert map[string]string to slice
-		myLabels := convertMapToSlice(instance.Labels)
+		//myLabels := convertMapToSlice(instance.Labels)
+		theInterfaces := make([]*YandexNetworkInterface, 0)
+		for _, network := range instance.NetworkInterfaces {
+			theInterfaces = appendNetworkInterfaces(theInterfaces, network, subnets)
+		}
 		Instances = append(Instances, &YandexInstanceStruct{
 			ID:               instance.Id,
 			Name:             instance.Name,
 			Description:      instance.Description,
 			CreatedAt:        instance.CreatedAt.String(),
 			ZoneID:           instance.ZoneId,
-			Labels:           myLabels,
+			Interfaces:       theInterfaces,
+			Labels:           instance.Labels,
 			ParentFolderID:   folder.ID,
 			ParentFolderName: folder.Name,
 		})
@@ -338,8 +406,12 @@ func appendInstances(Instances []*YandexInstanceStruct, folder *YandexFolderStru
 	return Instances
 }
 
-// GetYandexInstances - gets folders info for all provided clouds
+// GetYandexInstances - gets instances info for all provided folders
 func GetYandexInstances(ctx context.Context, sdk *yandexcloudsdk.SDK, folders []*YandexFolderStruct) ([]*YandexInstanceStruct, error) {
+	subnets, err := GetYandexSubnets(context.Background(), sdk, folders)
+	if err != nil {
+		log.Panic(err.Error())
+	}
 	theInstances := make([]*YandexInstanceStruct, 0)
 	for _, folder := range folders {
 		instances, err := sdk.Compute().Instance().List(ctx, &compute.ListInstancesRequest{
@@ -349,7 +421,7 @@ func GetYandexInstances(ctx context.Context, sdk *yandexcloudsdk.SDK, folders []
 		if err != nil {
 			return nil, err
 		}
-		theInstances = appendInstances(theInstances, folder, instances.Instances)
+		theInstances = appendInstances(theInstances, folder, instances.Instances, subnets)
 		for instances.NextPageToken != "" {
 			instances, err = sdk.Compute().Instance().List(ctx, &compute.ListInstancesRequest{
 				FolderId:  folder.ID,
@@ -359,7 +431,7 @@ func GetYandexInstances(ctx context.Context, sdk *yandexcloudsdk.SDK, folders []
 			if err != nil {
 				return nil, err
 			}
-			theInstances = appendInstances(theInstances, folder, instances.Instances)
+			theInstances = appendInstances(theInstances, folder, instances.Instances, subnets)
 		}
 	}
 	return theInstances, nil
@@ -368,13 +440,13 @@ func GetYandexInstances(ctx context.Context, sdk *yandexcloudsdk.SDK, folders []
 func appendMDBMySQL(MySQLs []*YandexMySQLStruct, folder *YandexFolderStruct, yandexMySQLs []*mysql.Cluster) []*YandexMySQLStruct {
 	for _, thismysql := range yandexMySQLs {
 		// Convert map[string]string to slice
-		myLabels := convertMapToSlice(thismysql.Labels)
+		//myLabels := convertMapToSlice(thismysql.Labels)
 		MySQLs = append(MySQLs, &YandexMySQLStruct{
 			ID:               thismysql.Id,
 			Name:             thismysql.Name,
 			Description:      thismysql.Description,
 			CreatedAt:        thismysql.CreatedAt.String(),
-			Labels:           myLabels,
+			Labels:           thismysql.Labels,
 			ParentFolderID:   folder.ID,
 			ParentFolderName: folder.Name,
 		})
@@ -412,13 +484,13 @@ func GetYandexMySQLs(ctx context.Context, sdk *yandexcloudsdk.SDK, folders []*Ya
 func appendMDBMongoDB(MongoDBs []*YandexMongoDBStruct, folder *YandexFolderStruct, yandexMongoDBs []*mongodb.Cluster) []*YandexMongoDBStruct {
 	for _, thismongodb := range yandexMongoDBs {
 		// Convert map[string]string to slice
-		myLabels := convertMapToSlice(thismongodb.Labels)
+		//myLabels := convertMapToSlice(thismongodb.Labels)
 		MongoDBs = append(MongoDBs, &YandexMongoDBStruct{
 			ID:               thismongodb.Id,
 			Name:             thismongodb.Name,
 			Description:      thismongodb.Description,
 			CreatedAt:        thismongodb.CreatedAt.String(),
-			Labels:           myLabels,
+			Labels:           thismongodb.Labels,
 			ParentFolderID:   folder.ID,
 			ParentFolderName: folder.Name,
 		})
@@ -456,13 +528,13 @@ func GetYandexMongoDBs(ctx context.Context, sdk *yandexcloudsdk.SDK, folders []*
 func appendMDBPostgreSQL(PostgreSQLs []*YandexPostgreSQLStruct, folder *YandexFolderStruct, yandexPostgreSQLs []*postgresql.Cluster) []*YandexPostgreSQLStruct {
 	for _, thismongodb := range yandexPostgreSQLs {
 		// Convert map[string]string to slice
-		myLabels := convertMapToSlice(thismongodb.Labels)
+		//myLabels := convertMapToSlice(thismongodb.Labels)
 		PostgreSQLs = append(PostgreSQLs, &YandexPostgreSQLStruct{
 			ID:               thismongodb.Id,
 			Name:             thismongodb.Name,
 			Description:      thismongodb.Description,
 			CreatedAt:        thismongodb.CreatedAt.String(),
-			Labels:           myLabels,
+			Labels:           thismongodb.Labels,
 			ParentFolderID:   folder.ID,
 			ParentFolderName: folder.Name,
 		})
@@ -498,15 +570,15 @@ func GetYandexPostgreSQLs(ctx context.Context, sdk *yandexcloudsdk.SDK, folders 
 }
 
 func appendMDBRedis(MDBs []*YandexRedisStruct, folder *YandexFolderStruct, yandexMDBs []*redis.Cluster) []*YandexRedisStruct {
-	for _, thismbd := range yandexMDBs {
+	for _, thismdb := range yandexMDBs {
 		// Convert map[string]string to slice
-		myLabels := convertMapToSlice(thismbd.Labels)
+		//myLabels := convertMapToSlice(thismbd.Labels)
 		MDBs = append(MDBs, &YandexRedisStruct{
-			ID:               thismbd.Id,
-			Name:             thismbd.Name,
-			Description:      thismbd.Description,
-			CreatedAt:        thismbd.CreatedAt.String(),
-			Labels:           myLabels,
+			ID:               thismdb.Id,
+			Name:             thismdb.Name,
+			Description:      thismdb.Description,
+			CreatedAt:        thismdb.CreatedAt.String(),
+			Labels:           thismdb.Labels,
 			ParentFolderID:   folder.ID,
 			ParentFolderName: folder.Name,
 		})
@@ -542,15 +614,15 @@ func GetYandexRedises(ctx context.Context, sdk *yandexcloudsdk.SDK, folders []*Y
 }
 
 func appendMDBClickHouse(MDBs []*YandexClickHouseStruct, folder *YandexFolderStruct, yandexMDBs []*clickhouse.Cluster) []*YandexClickHouseStruct {
-	for _, thismbd := range yandexMDBs {
+	for _, thismdb := range yandexMDBs {
 		// Convert map[string]string to slice
-		myLabels := convertMapToSlice(thismbd.Labels)
+		//myLabels := convertMapToSlice(thismbd.Labels)
 		MDBs = append(MDBs, &YandexClickHouseStruct{
-			ID:               thismbd.Id,
-			Name:             thismbd.Name,
-			Description:      thismbd.Description,
-			CreatedAt:        thismbd.CreatedAt.String(),
-			Labels:           myLabels,
+			ID:               thismdb.Id,
+			Name:             thismdb.Name,
+			Description:      thismdb.Description,
+			CreatedAt:        thismdb.CreatedAt.String(),
+			Labels:           thismdb.Labels,
 			ParentFolderID:   folder.ID,
 			ParentFolderName: folder.Name,
 		})
@@ -588,13 +660,13 @@ func GetYandexClickHouses(ctx context.Context, sdk *yandexcloudsdk.SDK, folders 
 func appendDisk(Disks []*YandexDiskStruct, folder *YandexFolderStruct, yandexDisks []*compute.Disk) []*YandexDiskStruct {
 	for _, thisdisk := range yandexDisks {
 		// Convert map[string]string to slice
-		myLabels := convertMapToSlice(thisdisk.Labels)
+		//myLabels := convertMapToSlice(thisdisk.Labels)
 		Disks = append(Disks, &YandexDiskStruct{
 			ID:               thisdisk.Id,
 			Name:             thisdisk.Name,
 			Description:      thisdisk.Description,
 			CreatedAt:        thisdisk.CreatedAt.String(),
-			Labels:           myLabels,
+			Labels:           thisdisk.Labels,
 			ParentFolderID:   folder.ID,
 			ParentFolderName: folder.Name,
 		})
@@ -629,6 +701,55 @@ func GetYandexDisks(ctx context.Context, sdk *yandexcloudsdk.SDK, folders []*Yan
 	return theDisks, nil
 }
 
+func appendSubnet(Subnets []*YandexSubnetStruct, folder *YandexFolderStruct, yandexSubnets []*vpc.Subnet) []*YandexSubnetStruct {
+	for _, thissubnet := range yandexSubnets {
+		// Convert map[string]string to slice
+		//myLabels := convertMapToSlice(thissubnet.Labels)
+		Subnets = append(Subnets, &YandexSubnetStruct{
+			ID:               thissubnet.Id,
+			Name:             thissubnet.Name,
+			NetworkID:        thissubnet.NetworkId,
+			Labels:           thissubnet.Labels,
+			ParentFolderID:   folder.ID,
+			ParentFolderName: folder.Name,
+		})
+	}
+	return Subnets
+}
+
+// GetYandexSubnets - Grabs Yandex Networks
+func GetYandexSubnets(ctx context.Context, sdk *yandexcloudsdk.SDK, folders []*YandexFolderStruct) ([]*YandexSubnetStruct, error) {
+	theSubnets := make([]*YandexSubnetStruct, 0)
+	for _, folder := range folders {
+		Subnets, err := sdk.VPC().Subnet().List(ctx, &vpc.ListSubnetsRequest{
+			FolderId: folder.ID,
+			PageSize: yandexMaxPaginator,
+		})
+		if err != nil {
+			return nil, err
+		}
+		theSubnets = appendSubnet(theSubnets, folder, Subnets.Subnets)
+		for Subnets.NextPageToken != "" {
+			Subnets, err := sdk.VPC().Subnet().List(ctx, &vpc.ListSubnetsRequest{
+				FolderId:  folder.ID,
+				PageSize:  yandexMaxPaginator,
+				PageToken: Subnets.NextPageToken,
+			})
+			if err != nil {
+				return nil, err
+			}
+			theSubnets = appendSubnet(theSubnets, folder, Subnets.Subnets)
+		}
+	}
+	return theSubnets, nil
+}
+
+/*
+func GetYandexZones(zoneID string) string {
+
+}
+*/
+
 // AWS-alike collection of data is not possible unless you have keypair for each bucket or folder.
 
 // GetYandexCloudMap - Gets Yandex Cloud Map with provided credentials
@@ -646,13 +767,29 @@ func GetYandexCloudMap(keyFile []byte) *YandexClouds {
 	if err != nil {
 		log.Panic(err.Error())
 	}
+	subnets, err := GetYandexSubnets(context.Background(), YandexSDK, folders)
+	if err != nil {
+		log.Panic(err.Error())
+	}
 	instances, err := GetYandexInstances(context.Background(), YandexSDK, folders)
 	if err != nil {
 		log.Panic(err.Error())
 	}
 	for _, instance := range instances {
-		log.Debug(instance.ParentFolderName + " " + instance.Name + " ")
+		log.Debug("Folder: " + instance.ParentFolderName)
+		log.Debug("Name: " + instance.Name)
+		log.Debug("Labels: ")
 		log.Debug(instance.Labels)
+		log.Debug("Zone: " + instance.ZoneID)
+		log.Debug("Interfaces: ")
+		for _, m := range instance.Interfaces {
+			log.Debug("        ID: " + m.ID)
+			log.Debug("      IPV4: " + m.PrimaryIPV4)
+			log.Debug("      IPV6: " + m.PrimaryIPV6)
+			log.Debug("      NAT4: " + m.PrimaryV4NAT)
+			log.Debug("      NAT6: " + m.PrimaryV6NAT)
+			log.Debug("    Subnet: " + m.SubnetName)
+		}
 	}
 	mysqls, err := GetYandexMySQLs(context.Background(), YandexSDK, folders)
 	if err != nil {
@@ -705,6 +842,7 @@ func GetYandexCloudMap(keyFile []byte) *YandexClouds {
 	YandexCloud := &YandexClouds{
 		Clouds:        clouds,
 		Folders:       folders,
+		Subnets:       subnets,
 		Instances:     instances,
 		Disks:         disks,
 		MDBMySQL:      mysqls,
