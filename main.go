@@ -20,7 +20,7 @@ import (
 	postgresql "github.com/yandex-cloud/go-genproto/yandex/cloud/mdb/postgresql/v1"
 	redis "github.com/yandex-cloud/go-genproto/yandex/cloud/mdb/redis/v1"
 	resourcemanager "github.com/yandex-cloud/go-genproto/yandex/cloud/resourcemanager/v1"
-	"github.com/yandex-cloud/go-genproto/yandex/cloud/vpc/v1"
+	vpc "github.com/yandex-cloud/go-genproto/yandex/cloud/vpc/v1"
 	yandexcloudsdk "github.com/yandex-cloud/go-sdk"
 )
 
